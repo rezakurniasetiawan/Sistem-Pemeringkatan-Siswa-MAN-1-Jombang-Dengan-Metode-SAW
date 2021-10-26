@@ -1,0 +1,341 @@
+<?php
+session_start();
+
+include('../../koneksi.php');
+if(!isset($_SESSION["login"])){
+    header("Location: ../login.php");
+    exit;
+}
+if ($_SESSION['hakakses'] != "murid") {
+    die("<b>Oops!</b> Access Failed.
+		<button type='button' onclick=location.href='./'>Back</button>");
+}
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Murid</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/bootstrap.css">
+
+    <link rel="stylesheet" href="../../assets/vendors/iconly/bold.css">
+    <link rel="stylesheet" href="../../assets/vendors/fontawesome/all.min.css">
+
+    <link rel="stylesheet" href="../../assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
+    <link rel="stylesheet" href="../../assets/vendors/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="../../assets/css/app.css">
+    <link rel="shortcut icon" href="../../assets/images/favicon.svg" type="image/x-icon">
+</head>
+
+<body>
+    <div id="app">
+        <div id="sidebar" class="active">
+            <div class="sidebar-wrapper active">
+                <div class="sidebar-header">
+                    <div class="d-flex justify-content-between">
+                        <div class="logo">
+                            <a href="dashboard.php">Mansajoe</a>
+                        </div>
+                        <div class="toggler">
+                            <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="sidebar-menu">
+                    <ul class="menu">
+                        <li class="sidebar-title">Menu</li>
+
+                        <li class="sidebar-item  ">
+                            <a href="dashboard.php" class='sidebar-link'>
+                            <i class="bi bi-grid-fill"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item active ">
+                            <a href="matrikskeputusan.php" class='sidebar-link'>
+                            <i class="iconly-boldProfile"></i>
+                                <span>Analisis</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="../../proses/ceklogout.php" class='sidebar-link'>
+                                <i class="bi bi-file-earmark-medical-fill"></i>
+                                <span>Logout</span>
+                            </a>
+                        </li>
+
+
+
+
+                    </ul>
+                </div>
+                <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+            </div>
+        </div>
+        <header class='mb-3'>
+                <nav class="navbar navbar-expand navbar-light ">
+                    <div class="container-fluid">
+                        <a href="#" class="burger-btn d-block">
+                            <i class="bi bi-justify fs-3"></i>
+                        </a>
+
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                                <li class="nav-item dropdown me-1">
+                                    <a class="nav-link active dropdown-toggle" href="#" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <i class='bi bi-envelope bi-sub fs-4 text-gray-600'></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                        <li>
+                                            <h6 class="dropdown-header">Mail</h6>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#">No new mail</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown me-3">
+                                    <a class="nav-link active dropdown-toggle" href="#" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <i class='bi bi-bell bi-sub fs-4 text-gray-600'></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                        <li>
+                                            <h6 class="dropdown-header">Notifications</h6>
+                                        </li>
+                                        <li><a class="dropdown-item">No notification available</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <div class="dropdown">
+                                <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <div class="user-menu d-flex">
+                                        <div class="user-name text-end me-3">
+                                        <?php
+                                            $tampilPeg    = mysqli_query($koneksi, "SELECT * FROM tb_user WHERE nama='$_SESSION[nama]'");
+                                            $peg    = mysqli_fetch_array($tampilPeg);
+                                        ?>
+                                            <h6 class="mb-0 text-gray-600"><a><?= $peg['nama'] ?></a></h6>
+                                            <p class="mb-0 text-sm text-gray-600">Murid</p>
+                                        </div>
+                                        <div class="user-img d-flex align-items-center">
+                                            <div class="avatar avatar-md">
+                                                <img src="../../assets/images/faces/1.jpg">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                    <li>
+                                        <h6 class="dropdown-header">Reza</h6>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#"><i class="icon-mid bi bi-person me-2"></i> My
+                                            Profile</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="icon-mid bi bi-gear me-2"></i>
+                                            Settings</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="icon-mid bi bi-wallet me-2"></i>
+                                            Wallet</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item" href="#"><i
+                                                class="icon-mid bi bi-box-arrow-left me-2"></i> Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+        <div id="main">
+            <div class="page-content">
+                <section class="row">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                    <ul class="nav nav-tabs nav-justified">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="matrikskeputusan.php">Matriks Keputusan</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link " href="nilaibobot.php">Nilai Bobot</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link active" href="normalisasi.php">Normalisasi</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="perangkingan.php">Perangkingan</a>
+                                        </li>
+                                        </ul>
+                                        <br>
+                                        <div class="panel panel-info">
+                                        <div class="panel-body">
+                                            <h4>Matriks Keputusan</h4>
+                                            <table width="100%" class="table table-sm table-bordered table-hover" id="dataTables-example">
+                                            <thead>
+                                                <tr>
+                                                <th>NIS</th>
+                                                <th>UAS</th>
+                                                <th>UTS</th>
+                                                <th>Nilai Rapot</th>
+                                                <th>Nilai Tes Masuk</th>
+                                                </tr>
+                                            </thead>
+                                            <?php
+                                                $sql="SELECT NIS,UAS,UTS,nilairapot,nilaitesmasuk FROM tb_nilai";
+                                                $result=mysqli_query($koneksi,$sql);
+                                                    while($row=mysqli_fetch_array($result)){
+                                                        $NIS            = $row[0];
+                                                        $UAS            = $row[1];
+                                                        $UTS            = $row[2];
+                                                        $nilairapot     = $row[3];
+                                                        $nilaitesmasuk  = $row[4]; 
+                                                            echo "      
+                                                        <tr>  
+                                                    <td>".$NIS."</td>  
+                                                        <td>".$UAS."</td>
+                                                                <td>".$UTS."</td>
+                                                                <td>".$nilairapot."</td>
+                                                                <td>".$nilaitesmasuk."</td>
+                                                                </tr>   
+                                                    ";        
+                                            }
+                                                        
+                                            ?>
+                                            </table>
+                                            <hr>
+                                            <h4>Nilai Maksimal</h4>
+                                            <table width="100%" class="table table-sm table-bordered table-hover" id="dataTables-example">
+                                            <thead>
+                                                <tr>
+                                                <th>UAS</th>
+                                                <th>UTS</th>
+                                                <th>Nilai Rapot</th>
+                                                <th>Nilai Tes Masuk</th>
+                                                </tr>
+                                            </thead>
+                                            <?php
+                                            $sql="SELECT MAX(UAS), MAX(UTS), MAX(nilairapot), MAX(nilaitesmasuk)FROM tb_nilai";
+                                            $result=mysqli_query($koneksi,$sql); //row melihat dari sql 
+                                            while($row=mysqli_fetch_array($result)){
+                                                $MaxUAS           =$row[0];
+                                                $MaxUTS           =$row[1];
+                                                $MaxNilairapot    =$row[2];
+                                                $MaxNilaitesmasuk =$row[3];   
+                                            }
+                                                echo "      
+                                                    <tr>  
+                                                <td>".$MaxUAS."</td>  
+                                                        <td>".$MaxUTS."</td>
+                                                        <td>".$MaxNilairapot."</td>
+                                                        <td>".$MaxNilaitesmasuk."</td>
+                                                        </tr>   
+                                                ";        
+                                            
+                                            ?>
+                                            </table>
+                                            <hr>
+                                            <h4>Nilai Minimal</h4>
+                                            <table width="100%" class="table table-sm table-bordered table-hover" id="dataTables-example">
+                                            <thead>
+                                                <tr>
+                                                <th>UAS</th>
+                                                <th>UTS</th>
+                                                <th>Nilai Rapot</th>
+                                                <th>Nilai Tes Masuk</th>
+                                                </tr>
+                                            </thead>
+                                            <?php
+                                            $sql="SELECT MIN(UAS), MIN(UTS), MIN(nilairapot), MIN(nilaitesmasuk)FROM tb_nilai";
+                                            $result=mysqli_query($koneksi,$sql); //row melihat dari sql 
+                                            while($row=mysqli_fetch_array($result)){
+                                                $MinUAS           =$row[0];
+                                                $MinUTS           =$row[1];
+                                                $MinNilairapot    =$row[2];
+                                                $MinNilaitesmasuk =$row[3];   
+                                            }
+                                                echo "      
+                                                    <tr>  
+                                                <td>".$MaxUAS."</td>  
+                                                        <td>".$MaxUTS."</td>
+                                                        <td>".$MaxNilairapot."</td>
+                                                        <td>".$MaxNilaitesmasuk."</td>
+                                                        </tr>   
+                                                ";        
+                                            
+                                            ?>
+                                            </table>
+                                            <hr>
+                                            <h4>Nilai Normalisasi</h4>
+                                            <table width="100%" class="table table-sm table-bordered table-hover" id="dataTables-example">
+                                            <thead>
+                                                <tr>
+                                                <th></th>
+                                                <th>UAS</th>
+                                                <th>UTS</th>
+                                                <th>Nilai Rapot</th>
+                                                <th>Nilai Tes Masuk</th>
+                                                </tr>
+                                            </thead>
+                                            <?php
+                                            $sql="SELECT NIS, UAS, UTS, nilairapot, nilaitesmasuk FROM tb_nilai";
+                                            $result=mysqli_query($koneksi,$sql) or die(mysql_error()); //row melihat dari sql 
+                                            while($row = mysqli_fetch_array($result)){
+                                                $NIS          =$row[0];
+                                                $bUAS         =$row[1]/$MaxUAS;
+                                                $bUTS         =$row[2]/$MaxUTS;
+                                                $bRapot       =$row[3]/$MaxNilairapot;
+                                                $bTes         =$row[4]/$MaxNilaitesmasuk;
+                                                echo "      
+                                                    <tr>  
+                                                        <td>".$NIS."</td> 
+                                                <td>".$bUAS."</td>
+                                                        <td>".$bUTS."</td>
+                                                        <td>".$bRapot."</td>
+                                                        <td>".$bTes."</td>
+                                                        </tr>   
+                                                ";        
+                                            
+                                                }
+                                            ?>
+                                            </table>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <footer>
+                <div class="footer clearfix mb-0 text-muted">
+                    <div class="float-start">
+                        <p>2021 &copy; Rezadev</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script src="../../assets/js/bootstrap.bundle.min.js"></script>
+
+    <script src="../../assets/js/pages/dashboard.js"></script>
+
+    <script src="../../assets/js/main.js"></script>
+</body>
+
+</html>
